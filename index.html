@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
+
+    <script>
+        function focusMsg(){
+                document.getElementById("msg").innerHTML = "Minimum Advance amount should be 2000/-".fontcolor("red");
+        }
+
+         function blurMsg() {
+            var AdvanceAmt = document.getElementById("txtAmount").value;
+                if(AdvanceAmt < 2000){
+                   document.getElementById("msg").innerHTML = "Minimum Advance amount can't be less than 2000/-".fontcolor("red");
+                }else{
+                   document.getElementById("msg").innerHTML = "";
+            }
+         }  
+         function AmountChange(){
+        var AdvanceAmt = document.getElementById("txtAmount").value;
+        if(AdvanceAmt!=""){
+            document.getElementById("register").disabled=false;
+        }
+       }
+
+        function RegisterClick(){
+            document.getElementById("lblName").innerHTML = document.getElementById("txtName").value;
+        
+            document.getElementById("lblDate").innerHTML = document.getElementById("txtDate").value;
+            document.getElementById("lblDays").innerHTML = document.getElementById("txtDay").value;
+            document.getElementById("lblPersons").innerHTML = document.getElementById("txtPerson").value;
+            document.getElementById("lblAdvanceAmount").innerHTML = document.getElementById("txtAmount").value;
+
+            var roomName= "";
+            var roomCost = 0;
+            var adonName ="";
+            var adonCost = 0;
+            var total = 0;
+
+            var optDelux = document.getElementById("optDelux");
+            var optSuite = document.getElementById("optSuite");
+
+            if(optDelux.checked==true){
+                roomName = optDelux.value;
+                roomCost= 2500;
+            }
+            if(optSuite.checked==true){
+                roomName = optSuite.value;
+                roomCost= 4000;
+            }
+        
+            var optAc =document.getElementById("optAc");
+            var optLocker =document.getElementById("optLocker");
+            
+            if(optAc.checked==true){
+                adonName += optAc.value + "<br>";
+                adonCost = 1000;
+                roomCost = roomCost + adonCost;
+            }
+            if(optLocker.checked==true){
+                adonName += optLocker.value + "<br>";
+                adonCost = 300;
+                roomCost = roomCost + adonCost;
+            }
+
+            var TotalDays = document.getElementById("txtDay").value;
+            var Persons = document.getElementById("txtPerson").value;
+            var AdvanceAmt = document.getElementById("txtAmount").value;
+            if(Persons > 2){
+                var ExtraPersons = Persons - 2;
+            }else{
+                ExtraPersons = 0;
+            }
+            console.log(ExtraPersons);
+            total = (roomCost * TotalDays) + 1000 * ExtraPersons * TotalDays;
+            console.log(total);
+            document.getElementById("lblRoom").innerHTML = roomName;
+            document.getElementById("lblAdon").innerHTML = adonName;
+            document.getElementById("lblBalanceAmount").innerHTML = `<h3> &#8377; ${total - AdvanceAmt} </h3>`;
+        }
+    </script>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-image:url(/images/HotelBackground.jpg);
+            background-repeat: no-repeat;
+            background-size: 100% 760px;
+            font-family: arial;
+            background-color: black;
+        }
+        .shade{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: black;
+            opacity: 0.6;
+            height: 760px;
+            z-index: -1;
+        }
+        #msg {
+            background-color: white;
+            text-align: center;
+            font-size: 20px;
+            width: 70%;
+            margin: 0 auto;
+            border-radius: 10px;
+        }
+       
+    </style>
+   
+</head>
+<body class="container p-4">
+    <div class="shade">
+    </div>
+  <header class="bg-success text-center rounded-2">
+   <h3 class="text-light p-2">Hotel Registration Form</h3>
+  </header>
+   <div class="accordian" id="hotel">
+    <div class="accordian-item">
+        <div class="accordian-header">
+            <button data-bs-target="#customer" data-bs-toggle="collapse" class="btn btn-success w-50">Customer Info</button>
+        </div>
+        <div class="accordian-collapse collapse show mt-2 p-4" data-bs-parent="#hotel" id="customer">
+            <div class="accordian-body">
+                <dl class="row">
+                    <dt class="col-5 text-light">Customer Name</dt>
+                    <dd class="col-5"><input type="text" id="txtName" class="form-control"></dd>
+                    <dt class="col-5 text-light">Check in Date</dt>
+                    <dd class="col-5"><input type="date" class="form-control" id="txtDate"></dd>
+                    <dt class="col-5 text-light">Total No. of Days</dt>
+                    <dd class="col-5"><input type="number" class="form-control" id="txtDay"></dd>
+                    <dt class="col-5 text-light">Total No. of Persons</dt>
+                    <dd class="col-5"><input type="number" class="form-control" id="txtPerson"></dd> 
+                </dl>
+            </div>
+        </div>
+    </div>
+    <div class="accordian-item">
+        <div class="accordian-header">
+            <button data-bs-target="#room" data-bs-toggle="collapse" class="btn btn-success w-50">Select Room Type</button>
+        </div>
+        <div class="accordian-collapse collapse p-2" data-bs-parent="#hotel" id="room">
+            <div class="accordian-body">
+               <div class="row">
+                <div class="col text-center">
+                    <div class="card">
+                        <div class="text-center">
+                            <img src="/images/delux.jpg" alt="Delux Room" class="card-img-top w-75 mb-3">
+                        </div>
+                       
+                        <div class="card-header">
+                            <h2>Delux Room</h2>
+                        </div>
+                        <div class="card-footer">
+                            <h2><input type="radio" id="optDelux" checked value="Delux Room" class="form-check-input" name="room"> &#8377; 2500/-</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col text-center">
+                    <div class="card">
+                        <div class="text-center">
+                            <img src="/images/suite.jpg" alt="Suite Room" class="card-img-top w-75">
+                        </div>
+                        <div class="card-header">
+                            <h2>Suite Room</h2>
+                        </div>
+                        <div class="card-footer">
+                            <h2><input type="radio" id="optSuite"  value="Suite Room" class="form-check-input" name="room"> &#8377; 4000/-</h2>
+                        </div>
+                    </div>
+                </div>
+               </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="accordian-item">
+        <div class="accordian-header">
+            <button data-bs-target="#adon" data-bs-toggle="collapse" class="btn btn-success w-50">Select Amenities</button>
+        </div>
+        <div class="accordian-collapse collapse p-2" id="adon" data-bs-parent="#hotel">
+            <div class="accordian-body">
+                <div class="row">
+                    <div class="col text-center">
+                        <div class="card">
+                            <div class="text-center">
+                                <img src="/images/ac.png" alt="A/C" class="card-img-top w-75">
+                            </div>
+                            
+                            <div class="card-header">
+                                <h2>A/C</h2>                                        
+                            </div>
+                            <div class="card-footer">
+                                <h2><input class="form-check-input" value="A/C" id="optAc" Stype="checkbox"> &#8377; 1000/-</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col text-center">
+                        <div class="card">
+                            <div class="text-center">
+                                <img src="/images/locker.jpg" alt="Locker" class="card-img-top w-50">
+                            </div>
+                            
+                            <div class="card-header">
+                                <h2>Locker</h2>                                        
+                            </div>
+                            <div class="card-footer">
+                                <h2><input class="form-check-input" value="Locker" id="optLocker" type="checkbox"> &#8377; 300/-</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="accordian-item">
+        <div class="accordian-header">
+            <button data-bs-target="#amount" data-bs-toggle="collapse" class="btn btn-success w-50">Advance Amount</button>
+        </div>
+        <div class="accordian-collapse collapse mt-3 " data-bs-parent="#hotel" id="amount">
+            <div class="accordian-body">
+                <dl class="row">
+                    <dt class="col-5 text-light">Advance Amount</dt>
+                    <dd class="col-5"><input type="number" onfocus="focusMsg()" onblur="blurMsg()" onchange="AmountChange()" class="form-control" id="txtAmount"></dd>
+                    <dd id="msg"></dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+   </div>
+   <div class="text-center mt-4">
+    <button onclick="RegisterClick()" data-bs-target="#summary" data-bs-toggle="modal" id="register" disabled class="btn btn-primary w-25">Register</button>
+   </div>
+   <div class="modal fade" id="summary">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="text-success">Your Billing Summary</h2>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <dl class="row">
+                    <dt class="col-5">Customer Name</dt>
+                    <dd id="lblName" class="col-7"></dd>
+                    <dt class="col-5">Date</dt>
+                    <dd id="lblDate" class="col-7"></dd>
+                    <dt class="col-5">Total No. of Days</dt>
+                    <dd id="lblDays" class="col-7"></dd>
+                    <dt class="col-5">Total No. of Persons</dt>
+                    <dd id="lblPersons" class="col-7"></dd>
+                    <dt class="col-5">Room Type</dt>
+                    <dd id="lblRoom" class="col-7"></dd>
+                    <dt class="col-5">Amenities</dt>
+                    <dd id="lblAdon" class="col-7"></dd>
+                    <dt class="col-5 mt-2">Advance Amount</dt>
+                    <dd id="lblAdvanceAmount" class="col-7"></dd>
+                    <dt class="col-5 mt-2">Balance Amount</dt>
+                    <dd id="lblBalanceAmount" class="col-7"></dd>
+                </dl>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" data-bs-dismiss="modal" >OK</button>
+            </div>
+        </div>
+    </div>
+   </div>
+      
+  
+<script src="	https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
